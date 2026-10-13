@@ -1,0 +1,96 @@
+<section class="page">
+  <header class="page-header">
+    <h1>Cuarentena</h1>
+    <p class="muted">Registros que no superaron la validación y el motivo de su rechazo.</p>
+  </header>
+
+  <div class="card">
+    <div class="filters">
+      <div class="form-field">
+        <label for="dateFilter">Fecha de proceso</label>
+        <input id="dateFilter" class="input" type="date" [value]="dateFilter()" (input)="onDateChange($event)" />
+      </div>
+
+      <div class="form-field search">
+        <label for="search">Buscar</label>
+        <input
+          id="search"
+          class="input"
+          type="search"
+          placeholder="Código, nombre, documento, ciudad o motivo…"
+          [value]="search()"
+          (input)="onSearch($event)" />
+      </div>
+
+      <div class="actions">
+        <button type="button" class="btn btn-secondary" (click)="clearFilters()" [disabled]="loading()">
+          Limpiar filtros
+        </button>
+        <button type="button" class="btn btn-primary" (click)="load()" [disabled]="loading()">
+          {{ loading() ? 'Cargando…' : 'Actualizar' }}
+        </button>
+      </div>
+    </div>
+
+    @if (error(); as message) {
+      <div class="alert alert-error" role="alert">{{ message }}</div>
+    }
+
+    @if (!error()) {
+      <p class="muted summary">
+        @if (loading()) {
+          Cargando registros…
+        } @else {
+          {{ rows().length }} de {{ records().length }} registro(s)
+          {{ dateFilter() ? 'del ' + dateFilter() : 'en total' }}
+        }
+      </p>
+
+      @if (!loading() && rows().length === 0) {
+        <div class="empty">
+          <strong>No hay registros en cuarentena</strong>
+          <span class="muted">
+            {{ records().length > 0 ? 'Ningún registro coincide con la búsqueda.' : 'Cargue y procese un archivo para ver resultados aquí.' }}
+          </span>
+        </div>
+      } @else if (rows().length > 0) {
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Fecha proceso</th>
+                <th>Código</th>
+                <th>Nombre comercio</th>
+                <th>Tipo doc.</th>
+                <th>Número doc.</th>
+                <th>Ciudad</th>
+                <th>Motivo(s)</th>
+                <th>En cuarentena desde</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of rows(); track row.id) {
+                <tr>
+                  <td>{{ row.pcProcessDate | date: 'yyyy-MM-dd' }}</td>
+                  <td>{{ row.pcCodComRed || '—' }}</td>
+                  <td [class.cell-invalid]="!row.pcNomComRed?.trim()">{{ row.pcNomComRed?.trim() || '(vacío)' }}</td>
+                  <td>{{ row.pcTipDoc || '—' }}</td>
+                  <td class="mono">{{ row.pcNumDoc || '(vacío)' }}</td>
+                  <td>{{ row.pcCiudad || '—' }}</td>
+                  <td class="reasons-cell">
+                    <div class="reasons">
+                      @for (reason of row.reasons; track reason) {
+                        <span class="badge">{{ reason }}</span>
+                      }
+                    </div>
+                  </td>
+                  <td class="muted">{{ row.quarantinedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    }
+  </div>
+</section>

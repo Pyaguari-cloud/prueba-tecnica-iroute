@@ -1,0 +1,44 @@
+.process-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  .input {
+    min-width: 220px;
+  }
+}
+
+.result {
+  flex-direction: row;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.result-count {
+  display: grid;
+  place-items: center;
+  min-width: 88px;
+  height: 88px;
+  padding: 0 1rem;
+  border-radius: var(--radius);
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: 2.5rem;
+  font-weight: 700;
+
+  &.zero {
+    background: var(--success-soft);
+    color: var(--success);
+  }
+}
+
+.result-text {
+  flex: 1;
+  min-width: 240px;
+
+  p {
+    margin: 0.35rem 0 0;
+  }
+}

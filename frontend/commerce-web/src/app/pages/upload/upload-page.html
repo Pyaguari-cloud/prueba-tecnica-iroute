@@ -1,0 +1,117 @@
+<section class="page">
+  <header class="page-header">
+    <h1>Carga de archivo</h1>
+    <p class="muted">
+      Seleccione el archivo <code>commerce_DDMMYYYY.csv</code>, revise la previsualización y envíelo al servidor.
+    </p>
+  </header>
+
+  <!-- Selección del archivo -->
+  <div class="card">
+    <label
+      class="dropzone"
+      [class.dragging]="isDragging()"
+      (dragover)="onDragOver($event)"
+      (dragleave)="onDragLeave()"
+      (drop)="onDrop($event)">
+      <input #fileInput type="file" accept=".csv" hidden (change)="onFileSelected($event)" />
+
+      @if (file(); as selected) {
+        <span class="dropzone-title">{{ selected.name }}</span>
+        <span class="muted">{{ formatSize(selected.size) }} · haga clic para elegir otro archivo</span>
+      } @else {
+        <span class="dropzone-title">Haga clic o arrastre aquí el archivo CSV</span>
+        <span class="muted">Formato: commerce_DDMMYYYY.csv · máximo 10 MB</span>
+      }
+    </label>
+
+    @if (reading()) {
+      <p class="muted">Leyendo archivo…</p>
+    }
+
+    @if (validationError(); as message) {
+      <div class="alert alert-error" role="alert">{{ message }}</div>
+    }
+  </div>
+
+  <!-- Resultado del envío -->
+  @if (uploadResult(); as result) {
+    <div class="alert alert-success" role="status">
+      <span>
+        Archivo <strong>{{ result.fileName }}</strong> cargado correctamente:
+        <strong>{{ result.insertedCount }}</strong> registros insertados.
+      </span>
+      <a class="btn btn-primary" routerLink="/process" [queryParams]="{ date: processDates()[0] }">
+        Ir a procesar →
+      </a>
+    </div>
+  }
+
+  @if (uploadError(); as message) {
+    <div class="alert alert-error" role="alert">{{ message }}</div>
+  }
+
+  <!-- Previsualización -->
+  @if (rows().length > 0) {
+    <div class="card">
+      <div class="card-header">
+        <div>
+          <h2>Previsualización</h2>
+          <p class="muted">
+            {{ rows().length }} registros · fecha(s) de proceso:
+            {{ processDates().length > 0 ? processDates().join(', ') : 'no válida' }}
+          </p>
+        </div>
+
+        <div class="actions">
+          <button type="button" class="btn btn-secondary" (click)="reset()" [disabled]="uploading()">
+            Cancelar
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="upload()"
+            [disabled]="uploading() || uploadResult() !== null">
+            {{ uploading() ? 'Enviando…' : 'Enviar al servidor' }}
+          </button>
+        </div>
+      </div>
+
+      @if (emptyCellCount() > 0) {
+        <div class="alert alert-info">
+          Hay {{ emptyCellCount() }} celda(s) vacía(s) resaltadas. El archivo se cargará igual:
+          la validación de los datos se realiza en la pantalla de Procesamiento.
+        </div>
+      }
+
+      <div class="table-wrapper">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              @for (column of columns; track column) {
+                <th>{{ column }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of previewRows(); track $index) {
+              <tr>
+                <td class="muted">{{ $index + 1 }}</td>
+                @for (column of columns; track column) {
+                  <td [class.cell-empty]="!row[column].trim()">{{ row[column] || '—' }}</td>
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+
+      @if (rows().length > previewLimit) {
+        <p class="muted table-note">
+          Mostrando las primeras {{ previewLimit }} de {{ rows().length }} filas. Se enviará el archivo completo.
+        </p>
+      }
+    </div>
+  }
+</section>

@@ -1,0 +1,17 @@
+# ----- .NET / Visual Studio -----
+bin/
+obj/
+.vs/
+*.user
+*.suo
+
+# ----- Angular / Node -----
+node_modules/
+dist/
+.angular/
+
+# ----- Sistema / editores -----
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json

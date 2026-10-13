@@ -1,0 +1,20 @@
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" routerLink="/">
+      <span class="brand-mark">CE</span>
+      <span>Commerce <strong>ETL</strong></span>
+    </a>
+
+    <nav class="nav" aria-label="Navegación principal">
+      @for (item of navItems; track item.path) {
+        <a [routerLink]="item.path" routerLinkActive="active" ariaCurrentWhenActive="page">
+          {{ item.label }}
+        </a>
+      }
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <router-outlet />
+</main>

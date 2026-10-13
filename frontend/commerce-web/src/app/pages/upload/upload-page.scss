@@ -1,0 +1,42 @@
+.dropzone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 2.25rem 1rem;
+  border: 2px dashed var(--border-strong);
+  border-radius: var(--radius);
+  background: var(--surface-muted);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+
+  &:hover,
+  &.dragging {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+  }
+}
+
+.dropzone-title {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.cell-empty {
+  background: var(--warning-soft);
+  color: var(--warning);
+}
+
+.table-note {
+  margin: 0.75rem 0 0;
+  font-size: 0.85rem;
+}
+
+.alert-success {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}

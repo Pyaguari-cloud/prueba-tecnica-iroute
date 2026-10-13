@@ -1,0 +1,60 @@
+<section class="page">
+  <header class="page-header">
+    <h1>Procesamiento</h1>
+    <p class="muted">
+      Valida los registros cargados para una fecha de proceso. Los que tengan el nombre del comercio vacío
+      o un número de documento vacío, con letras o con caracteres especiales se moverán a cuarentena.
+    </p>
+  </header>
+
+  <div class="card">
+    <form class="process-form" (submit)="$event.preventDefault(); process()">
+      <div class="form-field">
+        <label for="processDate">Fecha de proceso (pc_processdate)</label>
+        <input
+          id="processDate"
+          class="input"
+          type="date"
+          required
+          [value]="processDate()"
+          (input)="onDateChange($event)" />
+      </div>
+
+      <button type="submit" class="btn btn-primary" [disabled]="!processDate() || processing()">
+        {{ processing() ? 'Procesando…' : 'Procesar' }}
+      </button>
+    </form>
+
+    @if (error(); as message) {
+      <div class="alert alert-error" role="alert">{{ message }}</div>
+    }
+  </div>
+
+  @if (result(); as r) {
+    <div class="card result" role="status">
+      <div class="result-count" [class.zero]="r.quarantinedCount === 0">
+        {{ r.quarantinedCount }}
+      </div>
+
+      <div class="result-text">
+        <h2>
+          {{ r.quarantinedCount === 1 ? 'registro enviado' : 'registros enviados' }} a cuarentena
+        </h2>
+        <p class="muted">
+          Fecha procesada: <strong>{{ processDate() }}</strong>.
+          @if (r.quarantinedCount === 0) {
+            No se encontraron registros inválidos (o la fecha ya había sido procesada).
+          } @else {
+            Los registros válidos permanecen en la tabla commerce.
+          }
+        </p>
+      </div>
+
+      @if (r.quarantinedCount > 0) {
+        <a class="btn btn-secondary" routerLink="/quarantine" [queryParams]="{ date: processDate() }">
+          Ver cuarentena →
+        </a>
+      }
+    </div>
+  }
+</section>

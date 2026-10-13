@@ -1,0 +1,58 @@
+.filters {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  .search {
+    flex: 1;
+    min-width: 240px;
+  }
+}
+
+.summary {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.reasons-cell {
+  white-space: normal;
+}
+
+.reasons {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+}
+
+.badge {
+  display: inline-block;
+  padding: 0.15rem 0.55rem;
+  border: 1px solid #fecaca;
+  border-radius: 999px;
+  background: var(--danger-soft);
+  color: var(--danger);
+  font-size: 0.8rem;
+  font-weight: 500;
+}
+
+.cell-invalid {
+  color: var(--danger);
+  font-style: italic;
+}
+
+.mono {
+  font-family: Consolas, 'Courier New', monospace;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 2.5rem 1rem;
+  border: 1px dashed var(--border-strong);
+  border-radius: var(--radius);
+  text-align: center;
+}
