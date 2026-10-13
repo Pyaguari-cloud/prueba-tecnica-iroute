@@ -190,4 +190,3 @@ frontend/commerce-web/src/app/
 - Para archivos muy grandes, reemplazar la llamada por registro con `SqlBulkCopy` o un parámetro con valores de tabla (TVP).
 - Pantalla de inicio de sesión con autenticación JWT.
 - Paginación del listado de cuarentena en el servidor.
-- Pruebas unitarias del servicio (xUnit + mocks del repositorio) y de los componentes Angular.
